@@ -1,0 +1,60 @@
+.buyStatusPage {
+  padding: 0.8rem;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+h4 {
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.title {
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.tableWrapper {
+  padding: 1rem;
+  background: var(--text);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    min-width: 700px;
+
+    th {
+      background-color: #f1f3f6;
+      font-weight: 600;
+    }
+
+    td,
+    th {
+      padding: 0.75rem 1rem;
+    }
+
+    td {
+      vertical-align: middle;
+    }
+
+    button {
+      margin-right: 0.5rem;
+      min-width: 80px;
+    }
+
+    @media (max-width: 768px) {
+      td,
+      th {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+      }
+
+      button {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}

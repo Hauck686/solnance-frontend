@@ -1,0 +1,337 @@
+@use '../Base/variable';
+
+.sidebar {
+  text-align: center;
+  padding-top: 10px;
+  width: 250px;
+  min-width: 200px;
+  background-color: variable.$color-010461;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  z-index: 200;
+  transition: transform 0.3s ease-in-out, width 0.3s;
+  overflow-x: hidden;
+
+  &__logo {
+    background-color: variable.$color-010461;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 18px;
+  }
+
+  &__img {
+    width: 90px;
+    margin-bottom: 10px;
+    transition: width 0.3s ease-in-out;
+
+    @media (max-width: 768px) {
+      width: 60px;
+    }
+    @media (max-width: 480px) {
+      width: 45px;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 10px;
+    padding-bottom: 100px;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+    transition: width 0.3s ease-in-out;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+    }
+  }
+
+  &__subhead {
+    font-size: 13px;
+    color: variable.$color-f5f8f9;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: start;
+    margin: 12px 0 3px 0;
+    padding-left: 7px;
+    letter-spacing: 0.7px;
+  }
+
+  &__link {
+    margin: 5px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: black !important;
+    text-transform: capitalize;
+    padding: 10px 12px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    background: none;
+    border: none;
+
+    svg {
+      margin-right: 8px;
+      z-index: 2;
+      min-width: 24px;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      transition: left 0.3s;
+      z-index: 1;
+    }
+
+    &:hover::before {
+      left: 0;
+    }
+
+    &:hover {
+      border-radius: 10px;
+      color: black !important;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &.active {
+      background-color: variable.$color-000000;
+      border-radius: 10px;
+      color: white !important;
+    }
+  }
+
+  &__sublink {
+    margin: 2px 0 2px 18px;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    color: black !important;
+    font-size: 1rem;
+    text-transform: capitalize;
+    padding: 8px 10px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    transition: background 0.3s;
+    cursor: pointer;
+    border-radius: 10px;
+    background: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      transition: left 0.3s;
+      z-index: 1;
+      border-radius: 10px;
+    }
+
+    &:hover::before {
+      left: 0;
+      border-radius: 10px;
+    }
+
+    &:hover {
+      color: black !important;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &.active {
+      background-color: variable.$color-000000;
+      border-radius: 8px;
+      color: white !important;
+    }
+  }
+
+  &__submenu.open,
+  &__sublink {
+    animation: submenuSlide 0.3s ease-in-out forwards;
+  }
+
+  @keyframes submenuSlide {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &__subname {
+    display: flex;
+    align-items: center;
+    padding: 5px 3px;
+    font-size: 0.92rem;
+    color: rgba(55, 55, 55, 0.8);
+    transition: color 0.3s;
+
+    &:hover {
+      color: #222;
+    }
+
+    &::before {
+      content: '○';
+      margin-right: 7px;
+      font-size: 0.8rem;
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    &.active {
+      color: #191919;
+      font-weight: 600;
+    }
+  }
+
+  // Responsive: Tablet
+  @media (max-width: 1024px) {
+    width: 190px;
+
+    &__img {
+      width: 46px;
+    }
+    &__list {
+      padding-left: 2px;
+      align-items: flex-start;
+    }
+    &__link {
+      font-size: 13px;
+      padding: 9px 6px;
+      svg {
+        margin-right: 4px;
+      }
+    }
+  }
+
+  // Responsive: Mobile
+  @media (max-width: 768px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 78vw;
+    max-width: 290px;
+    min-width: 120px;
+    z-index: 1200;
+    transform: translateX(-100%);
+    background-color: variable.$color-010461;
+    transition: transform 0.3s, width 0.3s;
+
+    &.open {
+      transform: translateX(0);
+      box-shadow: 1px 0 18px 0 rgba(20, 20, 20, 0.13);
+    }
+    &__img {
+      width: 37px;
+    }
+    &__list {
+      padding-left: 1px;
+      height: calc(100vh - 80px);
+    }
+    &__link {
+      font-size: 11.7px;
+      padding: 8px 3px;
+    }
+    &__sublink {
+      font-size: 0.97rem;
+      padding: 7px 7px;
+      margin-left: 10px;
+    }
+    &__subhead {
+      font-size: 11px;
+      margin: 10px 0 2px 0;
+      padding-left: 3px;
+    }
+  }
+
+  // Responsive: Small Mobile
+  @media (max-width: 480px) {
+    width: 95vw;
+    max-width: 50vw;
+    min-width: 60px;
+    padding-top: 5px;
+
+    &__img {
+      width: 28px;
+    }
+    &__list {
+      padding-left: 0;
+      height: calc(100vh - 60px);
+    }
+    &__link {
+      font-size: 10.2px;
+      padding: 6px 1px;
+    }
+    &__sublink {
+      font-size: 0.89rem;
+      padding: 5px 5px;
+      margin-left: 6px;
+    }
+    &__subhead {
+      font-size: 9px;
+      margin: 7px 0 2px 0;
+      padding-left: 2px;
+    }
+  }
+
+  &.closed {
+    transform: translateX(-100%);
+  }
+  &.open {
+    transform: translateX(0);
+  }
+}
+
+// Hamburger Menu Button for mobile
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 2100;
+
+  span {
+    display: block;
+    width: 32px;
+    height: 3.5px;
+    background: var(--text);
+    margin: 6.5px 0;
+    border-radius: 2px;
+    transition: all 0.25s;
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}

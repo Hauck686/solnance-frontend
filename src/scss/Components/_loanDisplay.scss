@@ -1,0 +1,125 @@
+.loans-display {
+  padding: 60px 8%;
+  color: #000;
+  background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+
+  .title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+  }
+
+  .loan-categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 32px;
+
+    button {
+      background: transparent;
+      border: 2px solid var(--accent, #4f8cff);
+      color: var(--accent, #4f8cff);
+      padding: 8px 22px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+
+      &:hover {
+        background: var(--accent, #4f8cff);
+        color: #fff;
+      }
+
+      &.active {
+        background: var(--accent, #4f8cff);
+        color: #fff;
+      }
+    }
+  }
+
+  .loan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+
+    .loan-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .loan-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+
+        h3 {
+          font-size: 1.2rem;
+          font-weight: 700;
+        }
+
+        .loan-category {
+          background: var(--accent, #4f8cff);
+          color: #fff;
+          padding: 4px 12px;
+          border-radius: 12px;
+          font-size: 0.8rem;
+        }
+      }
+
+      .loan-details {
+        font-size: 0.92rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+
+        p {
+          margin: 6px 0;
+          color: #e0e0e0;
+        }
+      }
+
+      .apply-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text);
+        background: linear-gradient(135deg, #6f5fbf 0%, #d67a49 100%);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover:not(:disabled) {
+          background: linear-gradient(135deg, #5a48a0 0%, #b56039 100%);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        &:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #ccc;
+    margin-top: 60px;
+  }
+}

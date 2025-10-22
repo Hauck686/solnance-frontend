@@ -1,0 +1,214 @@
+.referral-page {
+  background: var(--bg);
+  max-width: 100%;
+  padding: 24px 8px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  height: 100vh;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.referral-card {
+  background: linear-gradient(120deg, #232038 70%, #1a1832 100%);
+  border-radius: 18px;
+  padding: 32px 20px 26px 20px;
+  box-shadow: 0 4px 18px #0002, 0 2px 12px var(--bg);
+  text-align: center;
+  h2 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: 0.03em;
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+  .referral-desc {
+    color: #b0b8c4;
+    font-size: 1.03rem;
+    font-weight: 500;
+    margin-bottom: 23px;
+  }
+  .referral-link-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #181a28;
+    border-radius: 10px;
+    padding: 7px 10px;
+    margin-bottom: 11px;
+    .referral-link-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      outline: none;
+      cursor: pointer;
+      user-select: all;
+    }
+    .copy-btn {
+      background: var(--accent);
+      border: none;
+      color: var(--text);
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 7px 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.01rem;
+      transition: background 0.17s, color 0.17s, box-shadow 0.14s;
+      &:hover {
+        background: var(--accent);
+        color: var(--text);
+        box-shadow: 0 2px 14px #d67a4928;
+      }
+      &:active {
+        background: #d67a49;
+        color: var(--text);
+      }
+    }
+  }
+  .referral-tip {
+    margin-top: 2px;
+    color: #b0b8c4;
+    font-size: 0.98rem;
+    .reward-amount {
+      color: #0bfc33;
+      font-weight: 800;
+    }
+  }
+}
+
+.referral-list-card {
+  background: linear-gradient(120deg, #232038 70%, #1a1832 100%);
+  border-radius: 18px;
+  padding: 24px 14px 18px 14px;
+  box-shadow: 0 4px 18px #0002, 0 2px 12px #d67a4922;
+  h3 {
+    font-size: 1.13rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
+    margin-left: 7px;
+  }
+  .referral-list-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.98rem;
+    color: #b0b8c4;
+    font-weight: 600;
+    margin-bottom: 7px;
+    padding: 0 7px;
+    gap: 6px;
+    span {
+      flex: 1;
+      text-align: left;
+      &:nth-child(2) {
+        text-align: center;
+      }
+      &:nth-child(3) {
+        text-align: right;
+      }
+    }
+  }
+  .referral-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    .no-referrals {
+      text-align: center;
+      color: #b0b8c4;
+      font-size: 1.02rem;
+      margin: 22px 0 16px 0;
+    }
+    .referral-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #181a28;
+      border-radius: 7px;
+      padding: 9px 10px;
+      margin-bottom: 7px;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text);
+      box-shadow: 0 1px 6px #d67a4914;
+      transition: background 0.14s, box-shadow 0.15s;
+      span {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        &:nth-child(2) {
+          justify-content: center;
+        }
+        &:nth-child(3) {
+          justify-content: flex-end;
+        }
+      }
+      .ref-icon {
+        // width: 2rem;
+        // height: 28px;
+        background: #d67a4933;
+        color: #d67a49;
+        font-weight: 900;
+        font-size: 1.08rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 7px;
+      }
+      .ref-name {
+        font-size: 0.7rem;
+        color: var(--text);
+      }
+      .ref-earning {
+        color: #0bfc33;
+        font-size: 1.03rem;
+        font-weight: 700;
+      }
+      .pending {
+        color: #f7b32b;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .referral-page {
+    padding: 14px 2px 0 2px;
+    gap: 18px;
+  }
+  .referral-card,
+  .referral-list-card {
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 12px;
+  }
+  .referral-list-card {
+    padding-top: 13px;
+    h3 {
+      font-size: 1.03rem;
+    }
+    .referral-list-header {
+      font-size: 0.91rem;
+    }
+    .referral-list-item {
+      font-size: 0.6rem;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+diff --git a/node_modules/@vanilla-extract/sprinkles/createUtils/dist/vanilla-extract-sprinkles-createUtils.cjs.js b/node_modules/@vanilla-extract/sprinkles/createUtils/dist/vanilla-extract-sprinkles-createUtils.cjs.js
+index 00bfa86..2a959fa 100644
+--- a/node_modules/@vanilla-extract/sprinkles/createUtils/dist/vanilla-extract-sprinkles-createUtils.cjs.js
++++ b/node_modules/@vanilla-extract/sprinkles/createUtils/dist/vanilla-extract-sprinkles-createUtils.cjs.js
+@@ -1,7 +1,12 @@
+ 'use strict';
+ 
++let utils;
++
+ if (process.env.NODE_ENV === "production") {
+-  module.exports = require("./vanilla-extract-sprinkles-createUtils.cjs.prod.js");
++  utils = require("./vanilla-extract-sprinkles-createUtils.cjs.prod.js");
+ } else {
+-  module.exports = require("./vanilla-extract-sprinkles-createUtils.cjs.dev.js");
++  utils = require("./vanilla-extract-sprinkles-createUtils.cjs.dev.js");
+ }
++
++// 👇 Add this line so ESM imports can work
++module.exports = { ...utils, default: utils };

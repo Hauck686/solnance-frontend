@@ -1,0 +1,22 @@
+@use '../Base/variable';
+
+.button {
+  width: 300px;
+  height: 55px;
+  margin: 0.5rem 0;
+  background-color: variable.$color-e0a690;
+  border-radius: 0.3rem;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  &__text {
+    color: variable.$color-ffffff;
+    text-align: center;
+    font-weight: variable.$weight-medium;
+    font-size: variable.$size-18;
+  }
+
+  &:hover {
+    background-color: variable.$color-67bedc;
+  }
+}

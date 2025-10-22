@@ -1,0 +1,62 @@
+.withdraw-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg);
+  min-height: 100vh;
+
+  .withdraw-card {
+    background: var(--accent);
+    color: var(--text);
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 100%;
+
+    h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-top: 1rem;
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        margin-top: 0.4rem;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 6px;
+        background: #2c2c2c;
+        color: #fff;
+      }
+
+      button {
+        margin-top: 1.8rem;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 6px;
+        background: #00b894;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: #019170;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

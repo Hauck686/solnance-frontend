@@ -1,0 +1,55 @@
+.revenue-card {
+  background: linear-gradient(135deg, #d67a49, #d67a49);
+  padding: 1rem;
+  border-radius: 15px;
+  color: #000;
+  width: 100%;
+  min-height: 180px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .icon {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mini-chart {
+      width: 60px;
+      height: 40px;
+      margin-left: auto;
+    }
+  }
+
+  h2 {
+    margin: 0.5rem 0 0;
+    font-size: 2rem;
+  }
+
+  span {
+    font-size: 0.75rem;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 750px) {
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+
+    .mini-chart {
+      display: none;
+    }
+  }
+}

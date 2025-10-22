@@ -1,0 +1,333 @@
+.coin-widget {
+  width: 100%;
+  padding: 18px 16px 10px 16px;
+
+  h3 {
+    font-size: 0.65rem;
+    margin-bottom: 0.8rem;
+    color: var(--text);
+    font-weight: bold;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .coin-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .coin-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: 0.2s;
+
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .symbol {
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: var(--text);
+      }
+
+      .name {
+        font-size: 0.8rem;
+        color: var(--text);
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .price {
+        font-size: 0.8rem;
+        color: #268d1d;
+        font-weight: 600;
+      }
+
+      .tag {
+        font-size: 0.9rem;
+        font-weight: 500;
+        background: #268d1d;
+        color: var(--text);
+        padding: 2px 6px;
+        border-radius: 3px;
+      }
+    }
+
+    &:hover {
+      background: #aaaaaa;
+    }
+  }
+
+  .wallet-popup {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+
+    .popup-content {
+      background-color: var(--bg);
+      padding: 2rem;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 430px;
+      color: var(--text);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+
+      .wallet-balance {
+        text-align: center;
+        p {
+          font-size: 0.8rem;
+          color: var(--text);
+        }
+        h2 {
+          font-size: 1.6rem;
+          font-weight: 900;
+          margin: 5px 0;
+          color: var(--text);
+        }
+        span {
+          font-size: 0.9rem;
+          color: var(--text);
+        }
+      }
+
+      .wallet-stats {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+
+        div {
+          flex: 1;
+          text-align: center;
+
+          p {
+            font-size: 0.75rem;
+            color: var(--text);
+            margin-bottom: 4px;
+          }
+
+          h4 {
+            font-size: 0.95rem;
+            font-weight: bold;
+          }
+        }
+      }
+
+      .tabs {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+
+        button {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          background: none;
+          font-weight: 600;
+          color: var(--text);
+          cursor: pointer;
+          border-bottom: 2px solid transparent;
+          &.active {
+            color: var(--text);
+            border-color: var(--accent);
+          }
+        }
+      }
+
+      .wallet-address-section {
+        text-align: center;
+
+        h5 {
+          margin: 15px 0 10px;
+          font-size: 1rem;
+          font-weight: 700;
+        }
+
+        .qr-code {
+          width: 130px;
+          height: 130px;
+          margin: 10px auto;
+        }
+
+        .wallet-address {
+          font-size: 0.85rem;
+          margin: 12px 0;
+          word-break: break-all;
+          color: var(--text);
+        }
+
+        button {
+          padding: 10px 15px;
+          background: var(--accent);
+          color: var(--text);
+          border: none;
+          border-radius: 8px;
+          margin-bottom: 12px;
+          font-weight: 600;
+          cursor: pointer;
+
+          &:hover {
+            background: #222;
+          }
+        }
+
+        .tips {
+          margin-top: 15px;
+          font-size: 0.75rem;
+          text-align: left;
+          color: var(--text);
+          line-height: 1.5;
+        }
+      }
+
+      .close {
+        margin-top: 15px;
+        color: var(--text);
+        padding: 10px;
+        border-radius: 21px;
+        background: var(--accent);
+        &:hover {
+          background: #c62828;
+        }
+      }
+    }
+  }
+}
+
+// Modal styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 2.2rem 1.7rem 1.8rem 1.7rem;
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  h3 {
+    text-align: center;
+    font-size: 1.13em;
+    margin-bottom: 1em;
+    color: #17388a;
+  }
+  label {
+    display: block;
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 0.35em;
+  }
+  input[type='number'] {
+    width: 100%;
+    padding: 0.7em;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 0.9em;
+    font-size: 1.05em;
+    outline: none;
+    &:focus {
+      border-color: #2a5ada;
+    }
+  }
+  .converted {
+    margin: 0.1rem 0 0.9rem 0;
+    color: #888;
+    font-size: 0.97em;
+    text-align: right;
+  }
+  .modal-error {
+    color: #cc2b2b;
+    margin-bottom: 0.7em;
+    text-align: center;
+    font-size: 0.96em;
+  }
+  button {
+    border: none;
+    border-radius: 7px;
+    padding: 0.5rem;
+    font-weight: 500;
+    font-size: 1.05em;
+    margin-top: 0.2em;
+    cursor: pointer;
+    &:disabled {
+      background: var(--bg);
+      color: var(--text);
+    }
+    &:hover:not(:disabled) {
+      background: var(--bg);
+      color: var(--text);
+    }
+  }
+  .close-modal {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.3em;
+    color: var(--text);
+    cursor: pointer;
+  }
+}
+
+.deposit-success {
+  color: #188c44;
+  background: #e8ffe9;
+  border: 1px solid #c2f0cb;
+  padding: 10px 18px;
+  margin: 1rem auto;
+  border-radius: 8px;
+  max-width: 400px;
+  text-align: center;
+  button {
+    margin-left: 1em;
+    border: none;
+    background: none;
+    color: #188c44;
+    cursor: pointer;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 650px) {
+  .coin-widget {
+    padding: 1.3rem 0.4rem;
+  }
+  .popup-content {
+    padding: 1.2rem 0.5rem !important;
+  }
+}
+@media (max-width: 480px) {
+  .coin-grid {
+    grid-template-columns: 1fr;
+  }
+  .popup-content {
+    min-width: unset !important;
+  }
+}

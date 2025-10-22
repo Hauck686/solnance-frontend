@@ -1,0 +1,35 @@
+.cryptoGateway {
+  padding: 2rem;
+  background: #f5f7fa;
+  min-height: 100vh;
+
+  .title {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #222;
+  }
+
+  .form {
+    padding: 2rem;
+    background: var(--text);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+    .MuiTextField-root {
+      margin-bottom: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      min-width: 150px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 1rem;
+
+    .form {
+      padding: 1rem;
+    }
+  }
+}

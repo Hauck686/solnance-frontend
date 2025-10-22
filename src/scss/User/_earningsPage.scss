@@ -1,0 +1,150 @@
+.earnings-wrapper {
+  background: var(--bg);
+  min-height: 100vh;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.earnings-container {
+  background: var(--accent);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(95, 76, 238, 0.08);
+  padding: 32px 20px;
+  max-width: 520px;
+  width: 100%;
+}
+
+.earnings-container h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.loader {
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.15rem;
+  margin-top: 48px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 0;
+  color: #888;
+}
+.empty-state img {
+  width: 80px;
+  margin-bottom: 18px;
+  opacity: 0.7;
+}
+.empty-state h4 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.earnings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.earnings-card {
+  background: var(--bg);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(95, 76, 238, 0.06);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plan-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: #edeafd;
+  color: var(--text);
+}
+.status-badge.completed {
+  background: #e2f8e3;
+  color: #24bf61;
+}
+.status-badge.pending {
+  background: #fff5d2;
+  color: #c8a200;
+}
+.status-badge.active {
+  background: #e5eaff;
+  color: var(--text);
+}
+
+.card-category {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.card-details {
+  display: flex;
+  gap: 24px;
+  justify-content: flex-start;
+  margin-bottom: 2px;
+}
+.card-details .label {
+  font-size: 0.96rem;
+  color: #888;
+  display: block;
+}
+.card-details .value {
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.card-details .green {
+  color: #24bf61;
+}
+
+.card-dates {
+  display: flex;
+  gap: 18px;
+  font-size: 0.98rem;
+  color: var(--text);
+  margin-top: 8px;
+}
+.card-dates strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  .earnings-container {
+    padding: 20px 6px;
+
+    h2 {
+      font-size: 1rem;
+    }
+  }
+  .earnings-card {
+    padding: 14px 8px;
+    gap: 8px;
+  }
+}

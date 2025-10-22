@@ -1,0 +1,84 @@
+/* Reset */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
+.roboto-flex {
+  font-family: 'Roboto Flex', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'slnt' 0, 'wdth' 100, 'GRAD' 0, 'XOPQ' 96, 'XTRA' 468,
+    'YOPQ' 79, 'YTAS' 750, 'YTDE' -203, 'YTFI' 738, 'YTLC' 514, 'YTUC' 712;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Light Theme */
+:root {
+  --font-inter: 'Roboto Flex', sans-serif;
+  --bg: #ffffff;
+  --text: #000000;
+  --gray: #f5f6fa;
+  --grey: #535353;
+  --panel: #ffffff;
+  --border: #ddd;
+  --accent: rgb(34, 5, 60);
+  --success: #96c3a2;
+  --danger: #ea4335;
+  --primary: #1a73e8;
+  --secondary: #f1f3f4;
+}
+
+/* Dark Theme */
+[data-theme='dark'] {
+  // --bg: linear-gradient(135deg, rgb(2, 3, 129) 0%, rgb(40, 116, 252) 100%);
+  --bg: rgb(34, 5, 60);
+  --text: #f0f0f0;
+  --gray: #2a2a2a;
+  --grey: #b1b1b1;
+  --panel: #242424;
+  --border: #444;
+  --accent: rgb(82, 25, 132);
+}
+
+/* Typography */
+html,
+body {
+  font-family: var(--font-inter);
+  font-size: 16px;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text);
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+li {
+  color: var(--text);
+}
+
+/* Example Card */
+// .card {
+//   background: var(--panel);
+//   color: var(--text);
+//   border: 1px solid var(--border);
+//   border-radius: 12px;
+//   padding: 16px;
+// }

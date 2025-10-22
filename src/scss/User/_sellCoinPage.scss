@@ -1,0 +1,153 @@
+@use '../Base/variable';
+
+.sell-container {
+  background: var(--bg);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.sell-panel {
+  background: var(--gray);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 460px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sell-title {
+  font-size: 1.8rem;
+  text-align: center;
+  color: variable.$text;
+  margin-bottom: 1.5rem;
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  font-size: 0.95rem;
+  color: variable.$secondary;
+  &.active {
+    color: variable.$primary;
+    font-weight: bold;
+    border-bottom: 2px solid variable.$primary;
+    padding-bottom: 0.25rem;
+  }
+}
+
+.coin-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  .tab {
+    padding: 0.75rem 1rem;
+    background: #eee;
+    border: none;
+    border-radius: 10px;
+    flex: 1;
+    margin: 0 0.25rem;
+    cursor: pointer;
+    font-weight: 500;
+    &.active {
+      background: variable.$primary;
+      color: white;
+    }
+  }
+}
+
+.form-section,
+.receipt-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section label {
+  margin-bottom: 0.5rem;
+  color: variable.$text;
+  font-weight: 500;
+}
+
+.form-section select,
+.form-section input {
+  padding: 0.85rem;
+  margin-bottom: 1rem;
+  border: 1px solid variable.$border;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  &:focus {
+    border-color: variable.$primary;
+    outline: none;
+  }
+}
+
+.info-note {
+  font-size: 0.9rem;
+  color: variable.$secondary;
+  margin-bottom: 1rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: variable.$text;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.85rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  & + .btn {
+    margin-left: 0.5rem;
+  }
+}
+
+.primary {
+  background: variable.$primary;
+  color: white;
+}
+
+.secondary {
+  background: transparent;
+  color: variable.$text;
+  border: 1px solid variable.$border;
+}
+
+.success {
+  // background: variable.$success;
+  color: #02770c;
+}
+
+@media (max-width: 480px) {
+  .sell-panel {
+    padding: 1.5rem;
+  }
+  .actions {
+    flex-direction: column;
+  }
+  .btn + .btn {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}

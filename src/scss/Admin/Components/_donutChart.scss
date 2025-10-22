@@ -1,0 +1,67 @@
+// components/TrafficDonutChart.module.scss
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  max-width: 450px;
+  margin: 20px;
+  box-sizing: border-box;
+
+  canvas {
+    background: var(--text);
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-align: left;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.fbDot,
+.ytDot,
+.dsDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.fbDot {
+  background-color: #8e44ad;
+}
+
+.ytDot {
+  background-color: #e74c3c;
+}
+
+.dsDot {
+  background-color: #f1c40f;
+}
+
+@media (min-width: 600px) {
+  .labels {
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+  }
+}

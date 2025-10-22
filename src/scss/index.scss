@@ -1,0 +1,58 @@
+@use './Components/button';
+@use './Components/chatBot';
+@use './Components/sidebar';
+@use './Components/input';
+@use './Components/header';
+@use './Components/hoteldashboard';
+@use './Components/userTable';
+@use './Components/bookingOrder';
+@use './Components/tableContainer';
+@use './Components/analytics';
+@use './Components/PropertyList';
+@use './Components/customerSchedule';
+@use './Components/userTab';
+@use './Components/investmentPlanDisplay';
+@use './Components/loanDisplay';
+// @use './Components/UserManagement';
+@use './page/login';
+@use './page/home';
+@use './page/dashboard';
+@use './User/userDashboard';
+@use './User/investmentHistory';
+@use './User/deposit';
+@use './User/withdrawalPage';
+@use './User/referralPage';
+@use './User/buyCoinPage';
+@use './User/sellCoinPage';
+@use './User/applyLoanPage';
+@use './User/loansHistory';
+@use './User/loansPage';
+@use './User/kycpage';
+@use './User/profilePage';
+@use './User/activePlanPage';
+@use './User/earningsPage';
+@use './User/supportPage';
+@use './User/components/investplanComponent';
+@use './User/components/mainHeader';
+@use './User/components/coinPriceWidget';
+@use './User/components/userAmountCard';
+
+// admins scss
+@use './Admin/adminDashboard';
+@use './Admin/adminUsers';
+@use './Admin/Components/dashboardSection';
+@use './Admin/Components/revenueCard';
+@use './Admin/Components/donutChart';
+@use './Admin/Components/gradientLineChart';
+@use './Admin/Components/table';
+@use './Admin/Components/kycManagementComp';
+@use './Admin/buyStatus';
+@use './Admin/createBuyCoinPage';
+@use './Admin/swappedCoinpage';
+@use './Admin/cryptoGatewayPage';
+@use './Admin/walletManager';
+@use './Admin/loanStatusPage';
+
+// 🔴 Move all @import *after* @use
+@use './Base/base' as base;
+@use './Base/variable' as variable;

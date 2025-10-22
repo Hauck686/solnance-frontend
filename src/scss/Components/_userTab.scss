@@ -1,0 +1,67 @@
+.user-tab {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid var(--accent);
+  z-index: 1000;
+
+  .tab-btn {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    .tab-icon {
+      font-size: 22px;
+      margin-bottom: 2px;
+    }
+
+    &.active {
+      color: var(--accent); // highlight color
+    }
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  /* Floating center button */
+  .center-btn {
+    position: relative;
+    top: -20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--text) !important;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 159, 67, 0.4);
+
+    .tab-icon {
+      margin-bottom: 0;
+      font-size: 28px;
+    }
+
+    .tab-label {
+      display: none;
+    }
+  }
+}
