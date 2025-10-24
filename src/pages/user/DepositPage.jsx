@@ -327,8 +327,26 @@ function DepositPageContent () {
           wallet && (
             <div className='instruction-card'>
               <p className='label'>Send {wallet.symbol} to:</p>
-              <div className='copy-box'>
+              <div
+                className='copy-box'
+                onClick={() => {
+                  navigator.clipboard.writeText(wallet.walletAddress)
+                  alert('Wallet address copied!')
+                }}
+                style={{ cursor: 'pointer' }}
+              >
                 <span>{shorten(wallet.walletAddress)}</span>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  width='16'
+                  height='16'
+                  fill='currentColor'
+                  viewBox='0 0 16 16'
+                  style={{ marginLeft: '8px' }}
+                >
+                  <path d='M10 1.5A1.5 1.5 0 0 1 11.5 3v1h-1V3a.5.5 0 0 0-.5-.5H4A1.5 1.5 0 0 0 2.5 4v8A1.5 1.5 0 0 0 4 13.5h1v1H4A2.5 2.5 0 0 1 1.5 12V4A2.5 2.5 0 0 1 4 1.5h6z' />
+                  <path d='M6 5.5A1.5 1.5 0 0 1 7.5 4h4A1.5 1.5 0 0 1 13 5.5v8A1.5 1.5 0 0 1 11.5 15h-4A1.5 1.5 0 0 1 6 13.5v-8zM7.5 5a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-4z' />
+                </svg>
               </div>
             </div>
           )
