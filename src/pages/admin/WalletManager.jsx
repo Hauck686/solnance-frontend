@@ -57,6 +57,11 @@ export default function WalletManager () {
   const handleAdd = async () => {
     if (!form.symbol || !form.defaultWalletAddress) return
     try {
+      let token = null
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('authToken')
+      }
+
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/create-coinwallet`,
         form,
@@ -75,6 +80,11 @@ export default function WalletManager () {
 
   const handleDelete = async id => {
     try {
+      let token = null
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('authToken')
+      }
+
       await axios.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/delete-coinwallet/${id}`,
         {
