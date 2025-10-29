@@ -15,6 +15,11 @@ export default function LoanStatusPage () {
   const fetchLoans = async () => {
     setLoading(true)
     try {
+      let token = null
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('authToken')
+      }
+
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/loans/getAllUsersLoans/all`,
         {

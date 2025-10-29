@@ -31,6 +31,11 @@ export default function WalletManager () {
 
   const fetchWallets = async () => {
     try {
+      let token = null
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('authToken')
+      }
+
       const { data } = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/get-coinwallet`,
         {
