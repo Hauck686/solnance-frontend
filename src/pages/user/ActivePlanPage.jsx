@@ -238,12 +238,18 @@ const ActivePlanPage = () => {
                   Category: <span>{plan.planId?.category || 'User Plan'}</span>
                 </p>
 
-                <p>
+                {/* <p>
                   Start Date:{' '}
                   <span>
                     {dayjs(plan.startDate).format('MMM D, YYYY hh:mm A')}
                   </span>
                 </p>
+                <p>
+                  End Date:{' '}
+                  <span>
+                    {dayjs(plan.startDate).format('MMM D, YYYY hh:mm A')}
+                  </span>
+                </p> */}
 
                 <p>
                   Amount Invested: <span>${plan.amount.toLocaleString()}</span>
@@ -257,10 +263,10 @@ const ActivePlanPage = () => {
                 <p>
                   Profit Rate: <span>{plan.profitRate}%</span>
                 </p>
-
                 <p>
-                  Duration:{' '}
+                  Payout Interval :{' '}
                   <span>
+                    {plan.payoutIntervalDays}{' '}
                     {plan.durationDays > 0
                       ? `${plan.durationDays} days`
                       : plan.durationType}
@@ -268,18 +274,14 @@ const ActivePlanPage = () => {
                 </p>
 
                 <p>
-                  Payout Interval (days): <span>{plan.payoutIntervalDays}</span>
-                </p>
-
-                <p>
                   Total Expected Profit:{' '}
                   <span>${Number(plan.totalProfit || 0).toFixed(2)}</span>
                 </p>
 
-                <p>
-                  Profit So Far:{' '}
-                  <span>${Number(plan.profitSoFar || 0).toFixed(2)}</span>
-                </p>
+                {/* <p> */}
+                {/* Profit So Far:{' '} */}
+                {/* <span>${Number(plan.profitSoFar || 0).toFixed(2)}</span> */}
+                {/* </p> */}
 
                 <p>
                   Completed Payouts:{' '}
