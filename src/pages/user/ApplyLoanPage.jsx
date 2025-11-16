@@ -89,50 +89,60 @@ export default function LoanApplicationPage () {
   const handleSubmit = async e => {
     e.preventDefault()
     setIsSubmitting(true)
+
     try {
       const selectedWallet = wallets.find(w => w._id === selectedWalletId)
-      const selectedLoan = loans.find(l => l._id === selectedLoanId)
-      if (!selectedWallet || !selectedLoan) {
+      const selectedLoanPlan = loans.find(l => l._id === selectedLoanId)
+
+      if (!selectedWallet || !selectedLoanPlan) {
         toast.error('Please select a wallet and a loan plan')
         setIsSubmitting(false)
         return
       }
+
       if (
-        loanAmount < selectedLoan.minAmount ||
-        loanAmount > selectedLoan.maxAmount
+        loanAmount < selectedLoanPlan.minAmount ||
+        loanAmount > selectedLoanPlan.maxAmount
       ) {
         toast.error(
-          `Loan amount must be between $${selectedLoan.minAmount} and $${selectedLoan.maxAmount}`
+          `Loan amount must be between $${selectedLoanPlan.minAmount} and $${selectedLoanPlan.maxAmount}`
         )
         setIsSubmitting(false)
         return
       }
+
       const maxLoan = selectedWallet.balance * 0.6
       if (loanAmount > maxLoan) {
         toast.error('Loan amount exceeds your eligible wallet collateral.')
         setIsSubmitting(false)
         return
       }
+
       const documentUrl = await handleFileUpload()
       if (!documentUrl) {
         toast.error('Please upload a valid document before submitting.')
         setIsSubmitting(false)
         return
       }
+
       const data = {
         userId,
         walletId: selectedWalletId,
         amount: Number(loanAmount),
-        term: selectedLoan.term,
-        loanId: selectedLoan._id,
+        term: selectedLoanPlan.term,
+        loanId: selectedLoanPlan._id,
         documentUrl,
         coin: selectedWallet.symbol
       }
+
+      console.log('Submitting loan application with data:', data)
+
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/loans/applyforloan`,
         data,
         { headers: { Authorization: `Bearer ${token}` } }
       )
+
       toast.success('Loan application submitted successfully!')
       setLoanAmount('')
       setSelectedLoanId('')
@@ -145,34 +155,48 @@ export default function LoanApplicationPage () {
     }
   }
 
-  // Get current selected loan plan
-  const selectedLoan = loans.find(l => l._id === selectedLoanId)
-  // Compute summary
+  // --------------------------------------------
+  // CALCULATE SUMMARY (safe version)
+  // --------------------------------------------
+
+  const selectedLoanPlan = loans.find(l => l._id === selectedLoanId)
+
   let summary = null
-  if (selectedLoan && loanAmount) {
-    const rate = selectedLoan.interestRate / 100
-    const amount = Number(loanAmount || 0)
+
+  if (selectedLoanPlan && loanAmount) {
+    const rate = selectedLoanPlan.interestRate / 100
+    const amount = Number(loanAmount)
     const interest = amount * rate
     const totalRepayment = amount + interest
+
     let periods = 1
-    if (selectedLoan.repaymentFrequency === 'Weekly') {
+
+    if (selectedLoanPlan.repaymentFrequency === 'Weekly') {
       periods =
-        selectedLoan.durationType === 'months'
-          ? selectedLoan.duration * 4
-          : Math.ceil(selectedLoan.duration / 7)
-    } else if (selectedLoan.repaymentFrequency === 'Bi-weekly') {
+        selectedLoanPlan.durationType === 'months'
+          ? selectedLoanPlan.duration * 4
+          : Math.ceil(selectedLoanPlan.duration / 7)
+    } else if (selectedLoanPlan.repaymentFrequency === 'Bi-weekly') {
       periods =
-        selectedLoan.durationType === 'months'
-          ? selectedLoan.duration * 2
-          : Math.ceil(selectedLoan.duration / 14)
-    } else if (selectedLoan.repaymentFrequency === 'Monthly') {
+        selectedLoanPlan.durationType === 'months'
+          ? selectedLoanPlan.duration * 2
+          : Math.ceil(selectedLoanPlan.duration / 14)
+    } else if (selectedLoanPlan.repaymentFrequency === 'Monthly') {
       periods =
-        selectedLoan.durationType === 'months'
-          ? selectedLoan.duration
-          : selectedLoan.duration / 30
+        selectedLoanPlan.durationType === 'months'
+          ? selectedLoanPlan.duration
+          : selectedLoanPlan.duration / 30
     }
+
     const installment = totalRepayment / (periods || 1)
-    summary = { amount, interest, totalRepayment, periods, installment }
+
+    summary = {
+      amount,
+      interest,
+      totalRepayment,
+      periods,
+      installment
+    }
   }
 
   return (
@@ -208,12 +232,12 @@ export default function LoanApplicationPage () {
                   className='loanapp-input'
                   type='number'
                   placeholder={`Min. ${
-                    selectedLoan ? selectedLoan.minAmount : '1000'
+                    selectedLoanPlan ? selectedLoanPlan.minAmount : '1000'
                   }`}
                   value={loanAmount}
                   onChange={e => setLoanAmount(e.target.value)}
-                  min={selectedLoan?.minAmount || 1}
-                  max={selectedLoan?.maxAmount}
+                  min={selectedLoanPlan?.minAmount || 1}
+                  max={selectedLoanPlan?.maxAmount}
                 />
                 <button
                   type='button'
@@ -249,7 +273,7 @@ export default function LoanApplicationPage () {
               <div className='loanapp-input-group'>
                 <input
                   className='loanapp-input loanapp-readonly'
-                  value={selectedLoan ? selectedLoan.interestRate : ''}
+                  value={selectedLoanPlan ? selectedLoanPlan.interestRate : ''}
                   readOnly
                 />
                 <span className='loanapp-input-suffix'>%</span>
@@ -364,13 +388,15 @@ export default function LoanApplicationPage () {
                   <div>
                     Installment: <b>${summary.installment.toFixed(2)}</b>{' '}
                     <span style={{ color: '#aaa' }}>
-                      x {summary.periods} ({selectedLoan.repaymentFrequency})
+                      x {summary.periods} ({selectedLoanPlan.repaymentFrequency}
+                      )
                     </span>
                   </div>
                   <div>
                     Duration:{' '}
                     <b>
-                      {selectedLoan.duration} {selectedLoan.durationType}
+                      {selectedLoanPlan.duration}{' '}
+                      {selectedLoanPlan.durationType}
                     </b>
                   </div>
                 </div>
