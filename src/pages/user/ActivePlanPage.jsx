@@ -12,24 +12,32 @@ const formatDuration = dur =>
   `${dur.months()}m ${dur.days()}d ${dur.hours()}h ${dur.minutes()}m`
 
 /**
- * Calculate UI progress & remaining time using the investment snapshot fields.
- * This prefers:
- *  - investment.durationDays (snapshot) to compute a time-based progress bar
- *  - fallbacks: nextPayoutDate or totalProfit vs totalPaid when durationDays is not available
+ * calculateProgress(inv)
+ *
+ * Behavior:
+ * 1. If durationDays is present -> overall time-based progress (start -> start+durationDays).
+ * 2. Else if totalProfit > 0 and totalPaid > 0 -> money-based overall progress.
+ * 3. Else if nextPayoutDate exists -> progress within the current payout interval
+ *    (lastPayout || startDate) -> nextPayoutDate. This makes the bar move smoothly
+ *    even when the server hasn't recorded totalPaid/currentDay yet.
+ * 4. Fallback -> zero progress.
  */
 const calculateProgress = inv => {
   const now = dayjs()
-  const start = dayjs(inv.startDate)
+  const start = inv.startDate ? dayjs(inv.startDate) : null
 
-  // Prefer explicit durationDays snapshot (number of days)
   const durationDays = Number(inv.durationDays) || 0
   const nextPayout = inv.nextPayoutDate ? dayjs(inv.nextPayoutDate) : null
+
+  const totalProfit = Number(inv.totalProfit) || 0
+  const totalPaid = Number(inv.totalPaid) || 0
 
   let percent = 0
   let remainingDuration = null
   let isComplete = false
 
-  if (durationDays > 0) {
+  // 1) Explicit duration -> overall time progress
+  if (durationDays > 0 && start) {
     const end = start.add(durationDays, 'day')
     const totalMs = end.diff(start)
     const elapsedMs = Math.max(0, now.diff(start))
@@ -37,38 +45,58 @@ const calculateProgress = inv => {
     percent = totalMs > 0 ? Math.min(100, (elapsedMs / totalMs) * 100) : 100
     remainingDuration = dayjs.duration(remainingMs)
     isComplete = now.isAfter(end) || percent >= 100
-  } else if (typeof inv.totalProfit === 'number' && inv.totalProfit > 0) {
-    // If we don't have durationDays, fall back to profit progress (money-based)
-    const totalProfit = Number(inv.totalProfit)
-    const totalPaid = Number(inv.totalPaid) || 0
+    return {
+      percent: Number(percent.toFixed(1)),
+      remainingDuration,
+      isComplete
+    }
+  }
+
+  // 2) Money-based overall progress if server recorded payouts
+  if (totalProfit > 0 && totalPaid > 0) {
     percent = Math.min(100, (totalPaid / totalProfit) * 100)
     isComplete = totalPaid >= totalProfit
-    // For remaining time, if nextPayout exists use that, otherwise unknown
     if (nextPayout) {
       const remainingMs = Math.max(0, nextPayout.diff(now))
       remainingDuration = dayjs.duration(remainingMs)
     }
-  } else if (nextPayout) {
-    // No durationDays or totalProfit: show time until next payout
-    const remainingMs = Math.max(0, nextPayout.diff(now))
-    remainingDuration = dayjs.duration(remainingMs)
-    percent = 0
-    isComplete = false
-  } else {
-    percent = 0
-    remainingDuration = dayjs.duration(0)
-    isComplete = false
+    return {
+      percent: Number(percent.toFixed(1)),
+      remainingDuration,
+      isComplete
+    }
   }
 
+  // 3) No duration and no recorded money progress -> show progress within current payout interval
+  //    This gives live movement between start (or lastPayout) and nextPayout so the UI isn't static.
+  if (nextPayout && start) {
+    // lastPayout: prefer an explicit lastPayoutDate, else use startDate
+    const lastPayout = inv.lastPayoutDate ? dayjs(inv.lastPayoutDate) : start
+    const intervalMs = Math.max(1, nextPayout.diff(lastPayout)) // avoid div by 0
+    const elapsedInInterval = Math.max(0, now.diff(lastPayout))
+    const remainingMs = Math.max(0, nextPayout.diff(now))
+    const intervalPercent = Math.min(
+      100,
+      (elapsedInInterval / intervalMs) * 100
+    )
+
+    // Overall completion unknown here (we can't determine end of plan), so isComplete is false.
+    return {
+      percent: Number(intervalPercent.toFixed(1)),
+      remainingDuration: dayjs.duration(remainingMs),
+      isComplete: false
+    }
+  }
+
+  // 4) Nothing useful -> zero progress
   return {
-    percent: Number(percent.toFixed(1)),
-    remainingDuration,
-    isComplete
+    percent: 0,
+    remainingDuration: dayjs.duration(0),
+    isComplete: false
   }
 }
 
 const cashBackAmount = inv => {
-  // prefer expectedReturn snapshot, else compute from amount + totalProfit
   if (
     typeof inv.expectedReturn === 'number' &&
     !Number.isNaN(inv.expectedReturn)
@@ -85,37 +113,28 @@ const ActivePlanPage = () => {
   const [loading, setLoading] = useState(true)
   const [token, setToken] = useState(null)
 
-  const mapInvestment = inv => {
-    // Investment document shape expected:
-    // inv: {
-    //   _id, userId, planId, planName, profitRate, totalProfit,
-    //   durationDays, durationType, payoutIntervalDays, dailyProfitRate,
-    //   amount, startDate, nextPayoutDate, currentDay, totalPaid, expectedReturn, status ...
-    // }
+  const mapInvestment = rawInv => {
+    const planSnapshot = rawInv
+    const planRef = rawInv.planId || {}
 
-    const planSnapshot = inv // use fields directly from the investment document
-    const planRef = inv.planId || {}
-
-    const durationDays = Number(planSnapshot.durationDays) || 0
+    const durationDays =
+      Number(planSnapshot.durationDays ?? planRef.durationDays) || 0
     const durationType =
       planSnapshot.durationType || planRef.durationType || 'days'
     const payoutIntervalDays =
       Number(planSnapshot.payoutIntervalDays) ||
       Number(planRef.payoutFrequency) ||
-      1
+      7
 
     const totalProfit = Number(planSnapshot.totalProfit) || 0
     const totalPaid = Number(planSnapshot.totalPaid) || 0
     const profitRate =
       Number(planSnapshot.profitRate ?? planRef.profitRate) || 0
-    const dailyProfitRate =
-      Number(planSnapshot.dailyProfitRate) ||
-      (planRef.rateType === 'daily' ? Number(planRef.profitRate) : 0)
     const planName =
       planSnapshot.planName ||
       planRef.name ||
       planRef.title ||
-      `Investment #${String(inv._id).slice(0, 6)}`
+      `Investment #${String(rawInv._id).slice(0, 6)}`
     const amount = Number(planSnapshot.amount) || 0
 
     const { percent, remainingDuration, isComplete } = calculateProgress({
@@ -123,10 +142,11 @@ const ActivePlanPage = () => {
       durationDays,
       totalProfit,
       totalPaid,
-      nextPayoutDate: planSnapshot.nextPayoutDate
+      nextPayoutDate: planSnapshot.nextPayoutDate,
+      lastPayoutDate: planSnapshot.lastPayoutDate
     })
 
-    // Determine completed payouts using currentDay snapshot when available, else compute from elapsed time
+    // Determine completed payouts using currentDay snapshot when available, else derive from elapsed days
     const currentDay = Number(planSnapshot.currentDay) || 0
     let completedPayouts = 0
     if (currentDay > 0) {
@@ -138,6 +158,7 @@ const ActivePlanPage = () => {
       completedPayouts = Math.floor(elapsedDays / payoutIntervalDays)
     }
 
+    // If durationDays > 0 we can compute total payout periods, otherwise keep as unknown (1)
     const totalPayoutPeriods =
       durationDays > 0 ? Math.ceil(durationDays / payoutIntervalDays) : 1
     const profitPerPayout =
@@ -148,10 +169,10 @@ const ActivePlanPage = () => {
         : Math.min(totalProfit, completedPayouts * profitPerPayout)
 
     return {
-      ...inv,
+      ...rawInv,
+      _raw: rawInv,
       planName,
       profitRate,
-      dailyProfitRate,
       totalProfit,
       totalPaid,
       profitSoFar,
@@ -164,7 +185,7 @@ const ActivePlanPage = () => {
       remainingDuration,
       isComplete,
       amount,
-      cashBack: cashBackAmount(inv)
+      cashBack: cashBackAmount(rawInv)
     }
   }
 
@@ -185,7 +206,6 @@ const ActivePlanPage = () => {
 
       const data = res.data?.data || []
       const mapped = data.map(mapInvestment)
-
       setInvestments(mapped)
       setLoading(false)
     } catch (err) {
@@ -200,13 +220,15 @@ const ActivePlanPage = () => {
     const interval = setInterval(() => {
       setInvestments(prev =>
         prev.map(inv => {
-          const refreshed = mapInvestment(inv)
-          // preserve live-updating numeric fields that the server may have provided
+          const raw = inv._raw || inv
+          const refreshed = mapInvestment(raw)
           return {
             ...inv,
             percent: refreshed.percent,
             remainingDuration: refreshed.remainingDuration,
-            isComplete: refreshed.isComplete
+            isComplete: refreshed.isComplete,
+            completedPayouts: refreshed.completedPayouts,
+            profitSoFar: refreshed.profitSoFar
           }
         })
       )
@@ -237,29 +259,13 @@ const ActivePlanPage = () => {
                 <p>
                   Category: <span>{plan.planId?.category || 'User Plan'}</span>
                 </p>
-
-                {/* <p>
-                  Start Date:{' '}
-                  <span>
-                    {dayjs(plan.startDate).format('MMM D, YYYY hh:mm A')}
-                  </span>
-                </p>
-                <p>
-                  End Date:{' '}
-                  <span>
-                    {dayjs(plan.startDate).format('MMM D, YYYY hh:mm A')}
-                  </span>
-                </p> */}
-
                 <p>
                   Amount Invested: <span>${plan.amount.toLocaleString()}</span>
                 </p>
-
                 <p>
                   Total Cash Back:{' '}
                   <span>${Number(plan.cashBack).toLocaleString()}</span>
                 </p>
-
                 <p>
                   Profit Rate: <span>{plan.profitRate}%</span>
                 </p>
@@ -272,17 +278,10 @@ const ActivePlanPage = () => {
                       : plan.durationType}
                   </span>
                 </p>
-
                 <p>
                   Total Expected Profit:{' '}
                   <span>${Number(plan.totalProfit || 0).toFixed(2)}</span>
                 </p>
-
-                {/* <p> */}
-                {/* Profit So Far:{' '} */}
-                {/* <span>${Number(plan.profitSoFar || 0).toFixed(2)}</span> */}
-                {/* </p> */}
-
                 <p>
                   Completed Payouts:{' '}
                   <span>
@@ -290,7 +289,6 @@ const ActivePlanPage = () => {
                   </span>
                 </p>
               </div>
-
               <p>
                 {plan.isComplete ? (
                   '✅ Completed'
