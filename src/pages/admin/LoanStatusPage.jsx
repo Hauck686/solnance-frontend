@@ -56,7 +56,42 @@ export default function LoanStatusPage () {
 
   // Approve loan: set status, add to collateral wallet
   const handleApprove = async loan => {
-    // 1. Set loan status to Approved
+    let token = null
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('authToken')
+    }
+
+    // 1. Approve loan
+    await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/loans/${loan._id}`,
+      { status: 'Approved' }, // <-- DATA
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      } // <-- CONFIG
+    )
+
+    // 2. Add collateral
+    await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/loans/addCollateral`,
+      {
+        userId: loan.userId._id,
+        walletId: loan.walletId._id,
+        amount: loan.amount
+      }, // <-- DATA
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      } // <-- CONFIG
+    )
+
+    setRefreshing(v => !v)
+  }
+
+  // Decline loan
+  const handleDecline = async loan => {
     let token = null
     if (typeof window !== 'undefined') {
       token = localStorage.getItem('authToken')
@@ -65,42 +100,12 @@ export default function LoanStatusPage () {
     await axios.patch(
       `${process.env.NEXT_PUBLIC_API_URL}/loans/${loan._id}`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      },
-      {
-        status: 'Approved'
-      }
-    )
-    // 2. Add amount to user collateral wallet
-    await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/loans/addCollateral`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      },
-      {
-        userId: loan.userId,
-        walletId: loan.walletId._id,
-        amount: loan.amount
-      }
-    )
-    setRefreshing(v => !v)
-  }
-
-  // Decline loan
-  const handleDecline = async loan => {
-    await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/loans/${loan._id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      },
-      {
         status: 'Rejected'
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
     )
     setRefreshing(v => !v)
@@ -127,13 +132,13 @@ export default function LoanStatusPage () {
     await axios.patch(
       `${process.env.NEXT_PUBLIC_API_URL}/loans/${loan._id}`,
       {
+        amount: editData.amount,
+        status: editData.status
+      },
+      {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      },
-      {
-        amount: editData.amount,
-        status: editData.status
       }
     )
     setEditId(null)
@@ -187,9 +192,14 @@ export default function LoanStatusPage () {
                   <React.Fragment key={loan._id}>
                     <tr>
                       <td>
-                        {loan.userId.firstname} {loan.userId.lastname}
+                        {loan.userId
+                          ? `${loan.userId.firstname || 'Unknown'} ${
+                              loan.userId.lastname || ''
+                            }`
+                          : 'Unknown User'}
                       </td>
-                      <td>{loan.userId.email}</td>
+
+                      <td>{loan.userId?.email || 'Unknown'}</td>
                       <td>
                         {editId === loan._id ? (
                           <input

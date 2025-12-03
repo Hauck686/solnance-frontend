@@ -24,6 +24,11 @@ export default function EmailTemplatesPage () {
 
   // 🔹 Load all templates
   const fetchTemplates = async () => {
+    let token = null
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('authToken')
+    }
+
     try {
       setLoading(true)
       const res = await axios.get(
@@ -48,6 +53,11 @@ export default function EmailTemplatesPage () {
 
   // 🔹 Select template
   const handleSelect = async template => {
+    let token = null
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('authToken')
+    }
+
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/email/${template._id}`,
@@ -69,6 +79,11 @@ export default function EmailTemplatesPage () {
 
   // 🔹 Save update
   const handleSave = async () => {
+    let token = null
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('authToken')
+    }
+
     if (!selected) return
     try {
       await axios.put(
@@ -84,6 +99,11 @@ export default function EmailTemplatesPage () {
 
   // 🔹 Create new template
   const handleCreate = async () => {
+    let token = null
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('authToken')
+    }
+
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/email`,
@@ -108,6 +128,11 @@ export default function EmailTemplatesPage () {
 
   // 🔹 Delete template
   const handleDelete = async (e, id) => {
+    let token = null
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('authToken')
+    }
+
     e.stopPropagation() // prevent selecting when deleting
     try {
       await axios.delete(

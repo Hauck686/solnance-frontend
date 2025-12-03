@@ -173,8 +173,8 @@ export default function AdminHeader () {
         },
         {
           icon: <MessagesSquare />,
-          label: 'Send SMS',
-          path: '/admin/SendSMSPage'
+          label: 'Send Email',
+          path: '/admin/SendEmailPage'
         },
         {
           icon: <PartyPopper />,
@@ -294,11 +294,14 @@ export default function AdminHeader () {
     <div>
       <header className='dashboard-header'>
         <div className='logo-section'>
-          <img
-            src='https://i.postimg.cc/V6f00jhs/Crypt-Logo-Retina.webp'
+          {/* <img
+            src='https://res.cloudinary.com/da26wgev2/image/upload/v1761134034/receipts/bmnhjzee3cynfi5w3djz.png'
             alt='company logo'
             className='brand-name'
-          />
+          /> */}
+          <a href='https://smtpocket.com/'>
+            <h3>{process.env.NEXT_PUBLIC_APP_NAME}</h3>
+          </a>
         </div>
         <div className='header-actions'>
           <>

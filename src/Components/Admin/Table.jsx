@@ -95,6 +95,36 @@ export default function UserTable () {
       console.error(err)
     }
   }
+  const handleDeleteUser = async () => {
+    if (!confirm('Are you sure you want to delete this user?')) return
+
+    try {
+      let token = null
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('authToken')
+      }
+
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${walletUserId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      alert('User deleted successfully')
+
+      // Optionally refresh user list
+      getUser()
+
+      // If you want to clear selected user
+      setSelectedUser(null)
+    } catch (err) {
+      console.error(err)
+      alert('Error deleting user')
+    }
+  }
 
   // update wallet balance
   const handleWalletUpdate = async (userId, walletId, action) => {
@@ -259,6 +289,18 @@ export default function UserTable () {
 
             <button className='save-btn' onClick={handleUserUpdate}>
               Save
+            </button>
+            <button
+              onClick={handleDeleteUser}
+              style={{
+                background: 'red',
+                color: 'white',
+                padding: '8px 12px',
+                marginLeft: '2px',
+                borderRadius: '6px'
+              }}
+            >
+              Delete User
             </button>
 
             <h3>Wallets</h3>

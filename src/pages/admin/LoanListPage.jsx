@@ -50,17 +50,20 @@ export default function LoanListPage () {
 
   // ✅ Delete loan
   const handleDelete = async id => {
+    if (!confirm('Delete this loan?')) return
+
     try {
       let token = null
       if (typeof window !== 'undefined') {
         token = localStorage.getItem('authToken')
       }
 
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/loans/${id}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/loans/app/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
+
       setLoans(prev => prev.filter(loan => loan._id !== id))
     } catch (err) {
       console.error(err)
@@ -70,17 +73,21 @@ export default function LoanListPage () {
   // ✅ Toggle enabled
   const handleToggle = async (id, enabled) => {
     try {
+      let token = null
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('authToken')
+      }
+
       const res = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/loans/${id}`,
-        {
-          enabled: !enabled
-        },
+        { enabled: !enabled },
         {
           headers: {
             Authorization: `Bearer ${token}`
           }
         }
       )
+
       setLoans(prev =>
         prev.map(loan => (loan._id === id ? res.data.data : loan))
       )
@@ -98,6 +105,11 @@ export default function LoanListPage () {
   // ✅ Save changes
   const handleSave = async () => {
     try {
+      let token = null
+      if (typeof window !== 'undefined') {
+        token = localStorage.getItem('authToken')
+      }
+
       const res = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/loans/${editingLoan._id}`,
         editingLoan,
@@ -107,9 +119,11 @@ export default function LoanListPage () {
           }
         }
       )
+
       setLoans(prev =>
         prev.map(loan => (loan._id === editingLoan._id ? res.data.data : loan))
       )
+
       setOpen(false)
     } catch (err) {
       console.error(err)
