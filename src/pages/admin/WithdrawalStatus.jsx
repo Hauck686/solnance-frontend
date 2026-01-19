@@ -45,6 +45,7 @@ export default function WithdrawalStatus () {
       )
       .then(res => {
         setUsers(res.data)
+        console.log(res.data)
       })
   }, [])
 
@@ -177,6 +178,9 @@ export default function WithdrawalStatus () {
                 </Typography>
                 <Typography>Method: {selectedUser.method}</Typography>
                 <Typography>Coin: {selectedUser.coin}</Typography>
+                <Typography>
+                  Coin: {selectedUser.details.cryptoAddress}
+                </Typography>
 
                 {/* Details */}
                 {selectedUser.details && (
